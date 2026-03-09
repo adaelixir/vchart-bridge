@@ -1,0 +1,251 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EChartsToVChartMigrationResult",
+  "description": "Union output: 'mode' field determines shape. Use 'scan' fields for project plan, 'convert' fields for single chart.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["scan", "convert"]
+    },
+
+    "scanResult": {
+      "description": "Present when mode = 'scan'",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chartInventory", "couplingPoints", "blockingIssues", "rolloutPhases", "todoByChart"],
+      "properties": {
+        "chartInventory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["chartType", "componentPath", "riskLevel", "status"],
+            "properties": {
+              "chartType": { "type": "string" },
+              "componentPath": { "type": "string" },
+              "pluginSpecialLogic": { "type": "string" },
+              "riskLevel": { "type": "string", "enum": ["A", "B", "C", "D"] },
+              "status": { "type": "string", "enum": ["complete", "in-progress", "not-started", "blocked", "skip"] },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "couplingPoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category", "location", "description", "resolution"],
+            "properties": {
+              "category": {
+                "type": "string",
+                "enum": ["plugin-data-mutation", "echarts-type-in-hooks", "formatter", "theme-token", "other"]
+              },
+              "location": { "type": "string" },
+              "description": { "type": "string" },
+              "resolution": { "type": "string" },
+              "blocking": { "type": "boolean" }
+            }
+          }
+        },
+        "blockingIssues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["chartType", "issue", "suggestedFix"],
+            "properties": {
+              "chartType": { "type": "string" },
+              "issue": { "type": "string" },
+              "suggestedFix": { "type": "string" }
+            }
+          }
+        },
+        "rolloutPhases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["phase", "chartTypes", "prerequisite"],
+            "properties": {
+              "phase": { "type": "integer" },
+              "label": { "type": "string" },
+              "chartTypes": { "type": "array", "items": { "type": "string" } },
+              "prerequisite": { "type": "string" }
+            }
+          }
+        },
+        "todoByChart": {
+          "type": "object",
+          "description": "Keys are chart type names. Values are arrays of todo items.",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["task", "done"],
+              "properties": {
+                "task": { "type": "string" },
+                "done": { "type": "boolean" },
+                "blocking": { "type": "boolean" },
+                "notes": { "type": "string" }
+              }
+            }
+          }
+        },
+        "htmlDemoPath": {
+          "type": "string",
+          "description": "Suggested output path for the generated HTML demo file"
+        }
+      }
+    },
+
+    "convertResult": {
+      "description": "Present when mode = 'convert'",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chartType",
+        "riskLevel",
+        "riskReasons",
+        "normalizedSpec",
+        "targetVChartSpec",
+        "mappingNotes",
+        "unsupportedMappings",
+        "fallbackSuggestions",
+        "manualReviewItems",
+        "testCases",
+        "acceptanceChecklist"
+      ],
+      "properties": {
+        "chartType": { "type": "string" },
+        "riskLevel": { "type": "string", "enum": ["A", "B", "C", "D"] },
+        "riskReasons": { "type": "array", "items": { "type": "string" } },
+        "normalizedSpec": { "type": "object" },
+        "targetVChartSpec": { "type": "object" },
+        "mappingNotes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sourcePath", "targetPath", "status", "note"],
+            "properties": {
+              "sourcePath": { "type": "string" },
+              "targetPath": { "type": "string" },
+              "status": { "type": "string", "enum": ["mapped", "partially-mapped", "not-mapped"] },
+              "note": { "type": "string" }
+            }
+          }
+        },
+        "unsupportedMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sourcePath", "reason", "impact", "blocking"],
+            "properties": {
+              "sourcePath": { "type": "string" },
+              "targetPath": { "type": "string" },
+              "reason": { "type": "string" },
+              "impact": {
+                "type": "string",
+                "enum": ["visual-parity-loss", "interaction-loss", "data-loss", "cosmetic-only"]
+              },
+              "blocking": { "type": "boolean" },
+              "manualAction": { "type": "string" }
+            }
+          }
+        },
+        "fallbackSuggestions": { "type": "array", "items": { "type": "string" } },
+        "manualReviewItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["topic", "reason", "ownerHint"],
+            "properties": {
+              "topic": { "type": "string" },
+              "reason": { "type": "string" },
+              "ownerHint": { "type": "string" }
+            }
+          }
+        },
+        "testCases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "gate", "title", "steps", "expected"],
+            "properties": {
+              "id": { "type": "string" },
+              "gate": { "type": "string", "enum": ["static", "render", "interaction", "edge-case"] },
+              "title": { "type": "string" },
+              "steps": { "type": "array", "items": { "type": "string" } },
+              "expected": { "type": "string" }
+            }
+          }
+        },
+        "acceptanceChecklist": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item", "pass"],
+            "properties": {
+              "item": { "type": "string" },
+              "pass": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+            "enum": ["static", "render", "interaction"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "acceptanceChecklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "required", "status"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pass", "fail", "pending"]
+          }
+        }
+      }
+    }
+  }
+}

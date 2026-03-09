@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EChartsToVChartMigrationRequest",
+  "description": "Supports two modes: 'scan' (project-level migration plan) and 'convert' (single chart spec conversion).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "runtime", "rules", "checks"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["scan", "convert"],
+      "description": "'scan' = project-level migration plan; 'convert' = single MChartOption to VChart spec"
+    },
+    "projectScan": {
+      "type": "object",
+      "description": "Required when mode = 'scan'",
+      "additionalProperties": false,
+      "properties": {
+        "rootPath": {
+          "type": "string",
+          "description": "Repo root path, used to resolve file reads"
+        },
+        "chartPackagePath": {
+          "type": "string",
+          "description": "Path to the chart component package, e.g. packages/pc-react"
+        },
+        "targetChartTypes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "If provided, only analyze these chart types. Otherwise analyze all discovered types."
+        }
+      }
+    },
+    "sourceConfig": {
+      "type": "object",
+      "description": "Required when mode = 'convert'",
+      "additionalProperties": false,
+      "required": ["format", "value"],
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": ["business-schema", "mchart-option", "echarts-option"]
+        },
+        "value": {
+          "type": "object"
+        },
+        "chartId": {
+          "type": "string"
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["framework", "ssr", "container"],
+      "properties": {
+        "framework": {
+          "type": "string",
+          "enum": ["react", "vue", "other"]
+        },
+        "ssr": {
+          "type": "boolean"
+        },
+        "container": {
+          "type": "string",
+          "enum": ["fixed-size", "auto-resize", "unknown"]
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowDegrade", "allowFallbackToECharts", "targetChartTypes"],
+      "properties": {
+        "allowDegrade": {
+          "type": "boolean"
+        },
+        "allowFallbackToECharts": {
+          "type": "boolean"
+        },
+        "targetChartTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requireTooltipParity", "requireLegendParity", "requireThemeParity"],
+      "properties": {
+        "requireTooltipParity": {
+          "type": "boolean"
+        },
+        "requireLegendParity": {
+          "type": "boolean"
+        },
+        "requireThemeParity": {
+          "type": "boolean"
+        }
+      }
+    },
+    "vchartChecklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "required"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

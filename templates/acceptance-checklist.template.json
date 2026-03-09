@@ -1,0 +1,56 @@
+[
+  {
+    "id": "spec-required-fields",
+    "description": "Target VChart spec has required fields and valid basic structure.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "mapping-completeness",
+    "description": "All source fields are mapped or listed in unsupportedMappings.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "initial-render",
+    "description": "Chart renders on initial mount with no blank state for valid data.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "legend-parity",
+    "description": "Legend item count and toggle behavior are acceptable versus source chart.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "tooltip-parity",
+    "description": "Tooltip trigger and key content are acceptable versus source chart.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "resize-behavior",
+    "description": "Resize behavior is stable and does not break axes or labels.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "edge-empty-data",
+    "description": "Empty data does not crash and shows expected empty state.",
+    "required": true,
+    "status": "pending"
+  },
+  {
+    "id": "edge-single-point",
+    "description": "Single-point data renders correctly.",
+    "required": false,
+    "status": "pending"
+  },
+  {
+    "id": "fallback-available",
+    "description": "If blockers exist, ECharts fallback path is available.",
+    "required": true,
+    "status": "pending"
+  }
+]
