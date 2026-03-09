@@ -1,11 +1,11 @@
-# echarts-to-vchart-migrator
+# vchart-bridge
 
-GitHub Copilot skill，用于将 ECharts 封装的图表库迁移到 VChart。
+GitHub Copilot skill，用于将 ECharts / G2 封装的图表库迁移到 VChart。
 
 ## 安装
 
 ```bash
-npx degit huanxi/echarts-to-vchart-migrator ~/.agents/skills/echarts-to-vchart-migrator
+npx degit adaelixir/vchart-bridge ~/.agents/skills/echarts-to-vchart-migrator
 ```
 
 > 把 `huanxi` 替换成你的 GitHub 用户名。
